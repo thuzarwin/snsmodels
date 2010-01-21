@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" addedToStage="init()">
+	<mx:Script>
+		<![CDATA[
+			import models.IModelManager;
+			import models.ModelManager;
+			import models.media.sound.instance.SoundInstance;
+			
+			import mx.core.UIComponent;
+			public var model:IModelManager
+			private function init():void
+			{
+				var uc:UIComponent=new UIComponent();
+				addChild(uc);
+				model = ModelManager.getInstance();
+				model.initialize(this.stage,uc);
+				//this.addEventListener(Event.ENTER_FRAME,loop);
+			}
+			private function loop(event:Event):void
+			{
+				if(model.soundModel.ready){
+					this.removeEventListener(Event.ENTER_FRAME,loop);
+					model.soundModel.play(SoundInstance.gameMusic);
+				}
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>
