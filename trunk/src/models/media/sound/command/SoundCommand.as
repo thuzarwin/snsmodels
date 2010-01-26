@@ -99,15 +99,19 @@
 					return;
 				}
 				player = new SoundPlayer(sound,d.name);
-				
-				if (d.type == SoundType.MUSIC) {
-					player.play(0, d.loop,soundData.musicVolume);
-					soundData.musicSounds[d.name] = player;
-					player.addEventListener(Event.SOUND_COMPLETE, onMusicComplete);
-				}else if (d.type == SoundType.SFX) {
-					player.play(0, d.loop,soundData.sfxVolume);
-					soundData.sfxSounds[player] = player;
-					player.addEventListener(Event.SOUND_COMPLETE, onSfxComplete);
+				//try 是当玩家没有扬声器设备时sound.play()会返回null的错误
+				try{
+					if (d.type == SoundType.MUSIC) {
+						player.play(0, d.loop,soundData.musicVolume);
+						soundData.musicSounds[d.name] = player;
+						player.addEventListener(Event.SOUND_COMPLETE, onMusicComplete);
+					}else if (d.type == SoundType.SFX) {
+						player.play(0, d.loop,soundData.sfxVolume);
+						soundData.sfxSounds[player] = player;
+						player.addEventListener(Event.SOUND_COMPLETE, onSfxComplete);
+					}
+				}catch(e:Error){
+					trace(e);
 				}
 			}
 		}
