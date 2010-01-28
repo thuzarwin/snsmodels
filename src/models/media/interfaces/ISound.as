@@ -14,6 +14,8 @@
 		function stop(obj:Object):void;
 		function switchMusic():void;
 		function switchSfx():void;
+		function getMusicSwitch():Boolean;
+		function getSfxSwitch():Boolean;
 		function get ready():Boolean;
 		function set ready(b:Boolean):void;
 		function get wavAssets():ResourceLib;
