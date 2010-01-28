@@ -15,11 +15,15 @@
 		/**
 		 * 关闭音乐
 		 */
-		public static const SWITCH_MUSIC:String="SWITCH_MUSIC";
+		public static const SWITCH_MUSIC:String = "SWITCH_MUSIC";
+		public static const SWITCH_MUSIC_OFF:String = "SWITCH_MUSIC_OFF";
+		public static const SWITCH_MUSIC_ON:String="SWITCH_MUSIC_ON";
 		/**
 		 * 关闭音效
 		 */
 		public static const SWITCH_SFX:String = "SWITCH_SFX";
+		public static const SWITCH_SFX_OFF:String = "SWITCH_SFX_OFF";
+		public static const SWITCH_SFX_ON:String = "SWITCH_SFX_ON";
 		/**
 		 * 更新音乐状态
 		 */

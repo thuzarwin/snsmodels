@@ -3,6 +3,7 @@
 	import models.components.core.BaseModel;
 	import models.media.interfaces.ISound;
 	import models.media.sound.command.SoundCommand;
+	import models.media.sound.instance.SoundSwitch;
 	import models.media.sound.mediator.SoundMediator;
 	import models.media.sound.proxy.SoundData;
 	import models.utils.ResourceLib;
@@ -16,6 +17,8 @@
 		protected static var instance:SoundModel;
 		protected var _ready:Boolean = false;
 		protected var _wavAssets:ResourceLib;
+		protected var _musicSwitch:SoundSwitch = SoundSwitch.SwitchON;
+		protected var _sfxSwitch:SoundSwitch=SoundSwitch.SwitchON;
 		public function SoundModel()
 		{
 			
@@ -47,19 +50,43 @@
 		}
 		public function switchMusic():void
 		{
-			Facade.getInstance().sendNotification(SoundEvent.SWITCH_MUSIC);
+			var sw:SoundSwitch = getMusicSwitch();
+			if (sw == SoundSwitch.SwitchON) {
+				sw = SoundSwitch.SwitchOFF;
+			}else {
+				sw = SoundSwitch.SwitchON;
+			}
+			setMusicSwitch(sw);
 		}
 		public function switchSfx():void 
 		{
-			Facade.getInstance().sendNotification(SoundEvent.SWITCH_SFX);
+			var sw:SoundSwitch = getSfxSwitch();
+			if (sw == SoundSwitch.SwitchON) {
+				sw = SoundSwitch.SwitchOFF;
+			}else {
+				sw = SoundSwitch.SwitchON;
+			}
+			setSfxSwitch(sw);
 		}
-		public function getMusicSwitch():Boolean 
+		public function getMusicSwitch():SoundSwitch 
 		{
-			return (Facade.getInstance().retrieveProxy(SoundData.NAME) as SoundData).musicVolume > 0?true:false;
+			var obj:SoundSwitch = (Facade.getInstance().retrieveProxy(SoundData.NAME) as SoundData).musicSwitch;
+			return (obj == null?_musicSwitch:obj);
 		}
-		public function getSfxSwitch():Boolean 
+		public function getSfxSwitch():SoundSwitch 
 		{
-			return (Facade.getInstance().retrieveProxy(SoundData.NAME) as SoundData).sfxVolume > 0?true:false;
+			var obj:SoundSwitch = (Facade.getInstance().retrieveProxy(SoundData.NAME) as SoundData).sfxSwitch;
+			return (obj == null?_sfxSwitch:obj);
+		}
+		public function setMusicSwitch(obj:SoundSwitch):void 
+		{
+			_musicSwitch = obj;
+			Facade.getInstance().sendNotification(SoundEvent.SWITCH_MUSIC,_musicSwitch);
+		}
+		public function setSfxSwitch(obj:SoundSwitch):void 
+		{
+			_sfxSwitch = obj;
+			Facade.getInstance().sendNotification(SoundEvent.SWITCH_SFX,_sfxSwitch);
 		}
 		public function get ready():Boolean
 		{
