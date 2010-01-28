@@ -2,13 +2,15 @@
 {
 	import flash.events.Event;
 	import flash.media.Sound;
+	
+	import models.media.sound.SoundModel;
 	import models.media.sound.components.SoundPlayer;
 	import models.media.sound.instance.SoundSwitch;
 	import models.media.sound.mediator.SoundMediator;
+	import models.media.sound.events.SoundEvent;
 	import models.media.sound.proxy.SoundData;
 	import models.media.sound.proxy.struct.SoundType;
-	import models.media.sound.events.SoundEvent;
-	import models.media.sound.SoundModel;
+	
 	import org.puremvc.as3.interfaces.ICommand;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
