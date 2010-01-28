@@ -3,6 +3,8 @@
 	import flash.events.Event;
 	import flash.media.Sound;
 	import models.media.sound.components.SoundPlayer;
+	import models.media.sound.instance.SoundSwitch;
+	import models.media.sound.mediator.SoundMediator;
 	import models.media.sound.proxy.SoundData;
 	import models.media.sound.proxy.struct.SoundType;
 	import models.media.sound.events.SoundEvent;
@@ -21,6 +23,12 @@
 		{
 			super.execute(notification);
 			switch(notification.getName()) {
+				case SoundMediator.INIT_COMPLETE:
+					initMediator();
+				break;
+				case SoundData.INIT_COMPLETE:
+					initData();
+				break;
 				case SoundEvent.SOUND_PLAY:
 					play(notification.getBody());
 				break;
@@ -28,10 +36,10 @@
 					stop(notification.getBody());
 				break;
 				case SoundEvent.SWITCH_MUSIC:
-					switchMusic();
+					switchMusic(notification.getBody() as SoundSwitch);
 				break;
 				case SoundEvent.SWITCH_SFX:
-					switchSfx();
+					switchSfx(notification.getBody() as SoundSwitch);
 				break;
 				case SoundEvent.STARTUP:
 					startup();
@@ -45,6 +53,8 @@
 		private function startup():void
 		{
 			//trace("startup")
+			facade.registerCommand(SoundMediator.INIT_COMPLETE, SoundCommand);
+			facade.registerCommand(SoundData.INIT_COMPLETE, SoundCommand);
 			facade.registerCommand(SoundEvent.SWITCH_MUSIC, SoundCommand);
 			facade.registerCommand(SoundEvent.SWITCH_SFX, SoundCommand);
 			facade.registerCommand(SoundEvent.SOUND_PLAY, SoundCommand);
@@ -54,31 +64,54 @@
 			//注册数据
 			facade.registerProxy(new SoundData());
 		}
+		private function initMediator():void
+		{
+			trace("initMediator")
+			var sfxSwitch:SoundSwitch = SoundModel.getInstance().getSfxSwitch();
+			var musicSwitch:SoundSwitch = SoundModel.getInstance().getMusicSwitch();
+			sendNotification(SoundEvent.UPDATE_SFX_STATE, [sfxSwitch]);
+			sendNotification(SoundEvent.UPDATE_MUSIC_STATE, [musicSwitch]);
+		}
+		private function initData():void {
+			trace("initData")
+			var sfxSwitch:SoundSwitch = SoundModel.getInstance().getSfxSwitch();
+			var musicSwitch:SoundSwitch = SoundModel.getInstance().getMusicSwitch();
+			soundData.sfxSwitch = sfxSwitch;
+			soundData.musicSwitch = musicSwitch;
+		}
 		/**
 		 * 开/关闭音乐
 		 * @param	d
 		 */
-		private function switchMusic():void
+		private function switchMusic(obj:SoundSwitch):void
 		{
-			if (soundData.musicVolume == 0) {
-				soundData.musicVolume = 1
+			if(obj){
+				soundData.musicSwitch = obj
 			}else {
-				soundData.musicVolume = 0;
+				var sw:SoundSwitch = SoundModel.getInstance().getMusicSwitch();
+				if (sw == SoundSwitch.SwitchON) {
+					SoundModel.getInstance().setMusicSwitch(SoundSwitch.SwitchOFF)
+				}else {
+					SoundModel.getInstance().setMusicSwitch(SoundSwitch.SwitchON)
+				}
 			}
-			sendNotification(SoundEvent.UPDATE_MUSIC_STATE);
 		}
 		/**
 		 * 开/关闭音效
 		 * @param	d
 		 */
-		private function switchSfx(d:*=null):void
+		private function switchSfx(obj:SoundSwitch):void
 		{
-			if (soundData.sfxVolume == 0) {
-				soundData.sfxVolume = 1
+			if(obj){
+				soundData.sfxSwitch = obj
 			}else {
-				soundData.sfxVolume = 0;
+				var sw:SoundSwitch = SoundModel.getInstance().getSfxSwitch();
+				if (sw == SoundSwitch.SwitchON) {
+					SoundModel.getInstance().setSfxSwitch(SoundSwitch.SwitchOFF)
+				}else {
+					SoundModel.getInstance().setSfxSwitch(SoundSwitch.SwitchON)
+				}
 			}
-			sendNotification(SoundEvent.UPDATE_SFX_STATE);
 		}
 		/**
 		 * 播放声音

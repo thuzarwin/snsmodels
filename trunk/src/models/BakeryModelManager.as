@@ -63,6 +63,7 @@
 			switch(item.params.name) {
 				case AssetsSars.soundAssetPath:
 					AssetsSars.soundAssets = new ResourceLib(item.loader as Loader);
+					SoundModel.getInstance().ready = true;
 				break;
 				case AssetsSars.systemAssetPath:
 					AssetsSars.systemAssets = new ResourceLib(item.loader as Loader);
@@ -90,7 +91,6 @@
 		{
 			trace("sound complete");
 			var target:LoadQueue = event.target as LoadQueue;
-			SoundModel.getInstance().ready = true;
 			target.addEventListener(LoaderQueueEvent.ITEM_COMPLETE,onItemComplete);
 			target.addEventListener(LoaderQueueEvent.QUEUE_COMPLETE, onQueueComplete);
 		}

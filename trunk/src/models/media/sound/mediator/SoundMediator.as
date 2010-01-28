@@ -4,7 +4,8 @@
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import models.media.sound.events.SoundEvent;
-	import models.media.sound.proxy.SoundData;
+	import models.media.sound.instance.SoundSwitch;
+	import models.media.sound.SoundModel;
 	import models.utils.ButtonUtil;
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -17,6 +18,7 @@
 	public class SoundMediator extends Mediator implements IMediator
 	{
 		public static const NAME:String = "SoundMediator";
+		public static const INIT_COMPLETE:String = "SoundMediator_INIT_COMPLETE";
 		public var sfxBtn:MovieClip;
 		public var musicBtn:MovieClip;
 		public function SoundMediator(viewComponent:DisplayObject=null) 
@@ -31,6 +33,7 @@
 		{
 			super.onRegister();
 			addBtns();
+			sendNotification(SoundMediator.INIT_COMPLETE);
 		}
 		override public function onRemove():void 
 		{
@@ -42,10 +45,10 @@
 			super.handleNotification(notification);
 			switch (notification.getName()) {
 				case SoundEvent.UPDATE_MUSIC_STATE:
-					switchMusic();
+					updateMusic(notification.getBody() as Array);
 				break;
 				case SoundEvent.UPDATE_SFX_STATE:
-					switchSfx();
+					updateSfx(notification.getBody() as Array);
 				break;
 			}
 		}
@@ -69,23 +72,26 @@
 			sfxBtn.removeEventListener(MouseEvent.CLICK, onSwitchSfx);
 			musicBtn.removeEventListener(MouseEvent.CLICK, onSwitchMusic);
 		}
-		private function switchMusic():void
+		private function updateMusic(states:Array):void
 		{
-			
-			var volume:Number = (facade.retrieveProxy(SoundData.NAME) as SoundData).musicVolume;
-			if (volume == 0) {
-				musicBtn.mc.gotoAndStop(2);
-			}else {
-				musicBtn.mc.gotoAndStop(1);
+			if(states[0]!==null){
+				var switchm:SoundSwitch = states[0];
+				if (switchm==SoundSwitch.SwitchON) {
+					musicBtn.mc.gotoAndStop(1);
+				}else if(switchm==SoundSwitch.SwitchOFF){
+					musicBtn.mc.gotoAndStop(2);
+				}
 			}
 		}
-		private function switchSfx():void
+		private function updateSfx(states:Array):void
 		{
-			var volume:Number = (facade.retrieveProxy(SoundData.NAME) as SoundData).sfxVolume;
-			if (volume == 0) {
-				sfxBtn.mc.gotoAndStop(2);
-			}else {
-				sfxBtn.mc.gotoAndStop(1);
+			if(states[0]!==null){
+				var switchs:SoundSwitch = states[0];
+				if (switchs == SoundSwitch.SwitchON) {
+					sfxBtn.mc.gotoAndStop(1);
+				}else if(switchs==SoundSwitch.SwitchOFF) {
+					sfxBtn.mc.gotoAndStop(2);
+				}
 			}
 		}
 		private function onSwitchMusic(event:MouseEvent):void

@@ -9,6 +9,7 @@
 	import flash.text.TextField;
 	import models.IModelManager;
 	import models.BakeryModelManager;
+	import models.media.sound.instance.SoundSwitch;
 	import models.pay.proxy.PayData;
 	import sarslib.common.net.events.LoaderQueueEvent;
 	import sarslib.common.net.loader.LoadQueue;
@@ -30,7 +31,8 @@
 		{
 			model = BakeryModelManager.getInstance();
 			model.initialize(this.stage,this.stage);
-			
+			model.soundModel.setMusicSwitch(SoundSwitch.SwitchOFF);
+			model.soundModel.setSfxSwitch(SoundSwitch.SwitchON);
 		}
 		
 	}
