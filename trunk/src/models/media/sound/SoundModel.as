@@ -4,6 +4,7 @@
 	import models.media.interfaces.ISound;
 	import models.media.sound.command.SoundCommand;
 	import models.media.sound.mediator.SoundMediator;
+	import models.media.sound.proxy.SoundData;
 	import models.utils.ResourceLib;
 
 	import models.media.sound.events.SoundEvent;
@@ -51,6 +52,14 @@
 		public function switchSfx():void 
 		{
 			Facade.getInstance().sendNotification(SoundEvent.SWITCH_SFX);
+		}
+		public function getMusicSwitch():Boolean 
+		{
+			return (Facade.getInstance().retrieveProxy(SoundData.NAME) as SoundData).musicVolume > 0?true:false;
+		}
+		public function getSfxSwitch():Boolean 
+		{
+			return (Facade.getInstance().retrieveProxy(SoundData.NAME) as SoundData).sfxVolume > 0?true:false;
 		}
 		public function get ready():Boolean
 		{

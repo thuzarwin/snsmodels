@@ -22,6 +22,7 @@
 		function get systemUIModel():ISystemUIModel;
 		function get payModel():IPayModel
 		function get giftBoxModel():IGiftBoxModel;
+		
 	}
 	
 }
