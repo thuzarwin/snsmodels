@@ -10,7 +10,7 @@
 	{
 		
 		function startup(assets:ResourceLib):void;
-		function addGiftToBox(... gift:*):void;
+		function addGiftToBox(...arguments):void;
 		function show():void;
 		function acceptGift(gift:Object):void;
 		

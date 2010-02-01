@@ -38,7 +38,7 @@
 		 * 添加礼物数据
 		 * @param	gift
 		 */
-		private function addGiftToBox(gift:GiftStruct):void
+		private function addGiftToBox(gift:*):void
 		{
 			var gifts:Array = (facade.retrieveProxy(GiftBoxData.NAME) as GiftBoxData).gifts;
 			gifts.push(gift);

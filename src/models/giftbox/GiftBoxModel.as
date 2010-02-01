@@ -36,10 +36,10 @@
 			Facade.getInstance().registerCommand(GiftBoxEvent.SHOW_GIFT_BOX, GiftBoxCommand);
 			Facade.getInstance().registerCommand(GiftBoxEvent.ACCEPT_GIFT, GiftBoxCommand);
 		}
-		public function addGiftToBox(... gift:*):void
+		public function addGiftToBox(...arguments):void
 		{
-			for (var i:int = 0; i < gift.length; i++) {
-				Facade.getInstance().sendNotification(GiftBoxEvent.ADD_GIFT_TO_BOX, new GiftStruct(gift[i]));
+			for each(var i:* in arguments) {
+				Facade.getInstance().sendNotification(GiftBoxEvent.ADD_GIFT_TO_BOX, i);
 			}
 			
 		}
