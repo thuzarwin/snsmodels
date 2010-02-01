@@ -2,6 +2,8 @@
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import models.media.sound.events.SoundEvent;
 	import models.media.sound.instance.SoundSwitch;
@@ -33,12 +35,27 @@
 		{
 			super.onRegister();
 			addBtns();
+			if (viewComponent) {
+				(viewComponent as EventDispatcher).addEventListener(Event.INIT, viewInit);
+			}
+		}
+		override public function setViewComponent(viewComponent:Object):void 
+		{
+			super.setViewComponent(viewComponent);
+			(viewComponent as EventDispatcher).addEventListener(Event.INIT, viewInit);
+			sendNotification(SoundMediator.INIT_COMPLETE);
+		}
+		private function viewInit(event:Event):void 
+		{
 			sendNotification(SoundMediator.INIT_COMPLETE);
 		}
 		override public function onRemove():void 
 		{
 			super.onRemove();
 			removeBtns();
+			if (viewComponent) {
+				(viewComponent as EventDispatcher).removeEventListener(Event.INIT, viewInit);
+			}
 		}
 		override public function handleNotification(notification:INotification):void 
 		{
