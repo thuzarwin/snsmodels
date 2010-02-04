@@ -6,6 +6,7 @@
 	 */
 	public class ExternalPageEvent
 	{
+		public static const PublishFeedDailyReward:String = "ExternalPage_PublishFeedDailyReward";
 		public static const PublishFeedLevelUp:String = "ExternalPage_PublishFeedLevelUp";
 		public static const ShowPayPage:String = "ExternalPage_ShowPayPage";
 		public static const ShowInvitePage:String = "ExternalPage_ShowInvitePage";

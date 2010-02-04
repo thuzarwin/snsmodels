@@ -18,14 +18,20 @@
 		{
 			super.execute(notification);
 			switch(notification.getName()) {
+				case ExternalPageEvent.STARTUP:
+					startup();
+				break;
 				case ExternalPageEvent.ShowInvitePage:
 					showInvitePage();
 				break;
 				case ExternalPageEvent.ShowPayPage:
 					showPayPage();
 				break;
-				case ExternalPageEvent.STARTUP:
-					startup();
+				case ExternalPageEvent.PublishFeedLevelUp:
+					PublishFeedLevelUp(notification.getBody() as Array);
+				break;
+				case ExternalPageEvent.PublishFeedDailyReward:
+					PublishFeedDailyReward(notification.getBody() as Array);
 				break;
 			}
 		}
@@ -43,7 +49,7 @@
 		{
 			ClientControl.disabled();
 			try{
-				ExternalInterface.call("addInviteFriendsIFrame", true);
+				ExternalInterface.call("addInviteFriendsIFrame");
 			}catch (e:Error) {
 				trace(e);
 			}
@@ -52,7 +58,7 @@
 		{
 			ClientControl.disabled();
 			try{
-				ExternalInterface.call("addInviteFriendsIFrame", true);
+				ExternalInterface.call("addInviteFriendsIFrame");
 			}catch (e:Error) {
 				trace(e);
 			}
@@ -67,6 +73,12 @@
 					ClientControl.disabled();
 				break;
 			}
+		}
+		private function PublishFeedLevelUp(arg:Array) {
+			ExternalInterface.call("publishFeedLevelUp",arg);
+		}
+		private function PublishFeedDailyReward(arg:Array) {
+			ExternalInterface.call("publishFeedLevelUp",arg);
 		}
 	}
 
