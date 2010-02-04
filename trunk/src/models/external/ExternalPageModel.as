@@ -38,6 +38,10 @@
 		{
 			Facade.getInstance().sendNotification(ExternalPageEvent.ShowPayPage);
 		}
+		public function publishFeedLevelUp():void
+		{
+			Facade.getInstance().sendNotification(ExternalPageEvent.PublishFeedLevelUp);
+		}
 	}
 
 }
