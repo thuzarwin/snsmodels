@@ -38,9 +38,13 @@
 		{
 			Facade.getInstance().sendNotification(ExternalPageEvent.ShowPayPage);
 		}
-		public function publishFeedLevelUp():void
+		public function publishFeedLevelUp(userName:String,level:String):void
 		{
-			Facade.getInstance().sendNotification(ExternalPageEvent.PublishFeedLevelUp);
+			Facade.getInstance().sendNotification(ExternalPageEvent.PublishFeedLevelUp,[userName,level]);
+		}
+		public function publishFeedDailyReward(userName:String):void
+		{
+			Facade.getInstance().sendNotification(ExternalPageEvent.PublishFeedLevelUp,[userName]);
 		}
 	}
 
